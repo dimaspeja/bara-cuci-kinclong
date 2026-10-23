@@ -2,29 +2,47 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\BookingStatus;
 use App\Models\Service;
+use Illuminate\Http\Request;
 
-// FASE 2: landing dan daftar layanan memakai data tabel services.
-// Fase 6 menambah ringkasan booking di beranda pelanggan.
 class HomeController extends Controller
 {
     public function landing()
     {
-        return view('landing', ['services' => $this->activeServices()]);
+        return view('landing', [
+            'services' => Service::where('is_active', true)->orderBy('price')->get(),
+        ]);
     }
 
     public function services()
     {
-        return view('services', ['services' => $this->activeServices()]);
+        return view('services', [
+            'services' => Service::where('is_active', true)->orderBy('price')->get(),
+        ]);
     }
 
-    public function home()
+    /** Beranda pelanggan. */
+    public function home(Request $request)
     {
-        return view('home');
-    }
+        $user = $request->user();
 
-    private function activeServices()
-    {
-        return Service::where('is_active', true)->orderBy('price')->get();
+        $upcoming = $user->bookings()
+            ->with(['service', 'vehicle'])
+            ->whereIn('status', [
+                BookingStatus::Pending->value,
+                BookingStatus::Confirmed->value,
+                BookingStatus::InProgress->value,
+            ])
+            ->orderBy('booking_date')
+            ->orderBy('start_time')
+            ->limit(5)
+            ->get();
+
+        return view('home', [
+            'upcoming' => $upcoming,
+            'vehicleCount' => $user->vehicles()->count(),
+            'completedCount' => $user->bookings()->where('status', BookingStatus::Completed->value)->count(),
+        ]);
     }
 }

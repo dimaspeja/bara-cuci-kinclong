@@ -9,13 +9,9 @@
         </p>
         <div class="mt-6 flex flex-wrap gap-3">
             @auth
-                @if (auth()->user()->role?->isBackOffice())
-                    <a href="/admin" class="rounded-md bg-white px-5 py-2 font-medium text-sky-700 hover:bg-sky-50">Buka Panel Admin</a>
-                @else
-                    <a href="{{ route('home') }}" class="rounded-md bg-white px-5 py-2 font-medium text-sky-700 hover:bg-sky-50">Ke Beranda</a>
-                @endif
+                <a href="{{ route('bookings.create') }}" class="rounded-md bg-white px-5 py-2 font-medium text-sky-700 hover:bg-sky-50">Booking sekarang</a>
             @else
-                <a href="{{ route('register') }}" class="rounded-md bg-white px-5 py-2 font-medium text-sky-700 hover:bg-sky-50">Daftar</a>
+                <a href="{{ route('register') }}" class="rounded-md bg-white px-5 py-2 font-medium text-sky-700 hover:bg-sky-50">Daftar &amp; booking</a>
                 <a href="{{ route('login') }}" class="rounded-md border border-white/60 px-5 py-2 hover:bg-white/10">Masuk</a>
             @endauth
         </div>

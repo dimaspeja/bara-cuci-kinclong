@@ -11,16 +11,22 @@
 <header class="border-b border-slate-200 bg-white">
     <nav class="mx-auto flex max-w-5xl flex-wrap items-center gap-x-5 gap-y-2 px-4 py-3 text-sm">
         <a href="{{ route('landing') }}" class="mr-2 text-lg font-bold text-sky-600">Bara Cuci Kinclong</a>
-
         <a href="{{ route('services') }}" class="hover:text-sky-600">Layanan</a>
 
-        {{-- FASE 2: + Layanan. Menu lain ditambah per fase. --}}
         @if ($authUser && ! $authUser->role?->isBackOffice())
             <a href="{{ route('home') }}" class="hover:text-sky-600">Beranda</a>
+            <a href="{{ route('bookings.create') }}" class="hover:text-sky-600">Booking</a>
+            <a href="{{ route('bookings.index') }}" class="hover:text-sky-600">Booking Saya</a>
+            <a href="{{ route('vehicles.index') }}" class="hover:text-sky-600">Kendaraan</a>
         @endif
 
         @if ($authUser && $authUser->role?->isBackOffice())
             <a href="/admin" class="font-medium text-sky-600">Panel Admin</a>
+            @if ($authUser->isAdmin())
+                <a href="{{ route('bookings.create') }}" class="hover:text-sky-600">Booking</a>
+                <a href="{{ route('bookings.index') }}" class="hover:text-sky-600">Booking Saya</a>
+                <a href="{{ route('vehicles.index') }}" class="hover:text-sky-600">Kendaraan</a>
+            @endif
         @endif
 
         <div class="ml-auto flex items-center gap-3">
