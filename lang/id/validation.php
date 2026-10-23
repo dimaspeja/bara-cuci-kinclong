@@ -1,0 +1,52 @@
+<?php
+
+return [
+    'accepted' => ':attribute harus diterima.',
+    'after_or_equal' => ':attribute harus berupa tanggal setelah atau sama dengan :date.',
+    'array' => ':attribute harus berupa array.',
+    'between' => [
+        'numeric' => ':attribute harus di antara :min dan :max.',
+        'string' => ':attribute harus di antara :min dan :max karakter.',
+    ],
+    'boolean' => ':attribute harus bernilai benar atau salah.',
+    'confirmed' => 'Konfirmasi :attribute tidak cocok.',
+    'date' => ':attribute bukan tanggal yang valid.',
+    'email' => ':attribute harus berupa alamat email yang valid.',
+    'exists' => ':attribute yang dipilih tidak valid.',
+    'in' => ':attribute yang dipilih tidak valid.',
+    'integer' => ':attribute harus berupa bilangan bulat.',
+    'max' => [
+        'numeric' => ':attribute tidak boleh lebih dari :max.',
+        'string' => ':attribute tidak boleh lebih dari :max karakter.',
+    ],
+    'min' => [
+        'numeric' => ':attribute minimal :min.',
+        'string' => ':attribute minimal :min karakter.',
+    ],
+    'numeric' => ':attribute harus berupa angka.',
+    'regex' => 'Format :attribute tidak valid.',
+    'required' => ':attribute wajib diisi.',
+    'string' => ':attribute harus berupa teks.',
+    'unique' => ':attribute sudah dipakai.',
+
+    'attributes' => [
+        'name' => 'Nama',
+        'email' => 'Email',
+        'password' => 'Kata sandi',
+        'phone' => 'Nomor telepon',
+        'role' => 'Peran',
+        'plate_number' => 'Plat nomor',
+        'type' => 'Jenis kendaraan',
+        'brand' => 'Merek',
+        'model' => 'Model',
+        'service_id' => 'Layanan',
+        'vehicle_id' => 'Kendaraan',
+        'booking_date' => 'Tanggal',
+        'start_time' => 'Jam',
+        'notes' => 'Catatan',
+        'price' => 'Harga',
+        'duration_minutes' => 'Durasi',
+        'description' => 'Deskripsi',
+        'reason' => 'Alasan',
+    ],
+];
