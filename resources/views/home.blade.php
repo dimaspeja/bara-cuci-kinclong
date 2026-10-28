@@ -1,36 +1,34 @@
 @extends('layouts.app')
 
 @section('title', 'Beranda · Bara Cuci Kinclong')
+@section('fullwidth', '1')
 
 @section('content')
-    <h1 class="text-2xl font-bold">Halo, {{ auth()->user()->name }} 👋</h1>
-    <p class="text-sm text-slate-500">Atur booking cuci kendaraan Anda dari sini.</p>
+    @include('main.hero', ['eyebrow' => 'Halo, '.\Illuminate\Support\Str::before(auth()->user()->name, ' ').' · selamat datang di'])
 
-    <div class="mt-6 grid gap-4 sm:grid-cols-3">
-        <div class="rounded-xl border border-slate-200 bg-white p-4">
-            <p class="text-xs text-slate-500">Booking aktif</p>
-            <p class="text-2xl font-bold">{{ $upcoming->count() }}</p>
-        </div>
-        <div class="rounded-xl border border-slate-200 bg-white p-4">
-            <p class="text-xs text-slate-500">Cuci selesai</p>
-            <p class="text-2xl font-bold">{{ $completedCount }}</p>
-        </div>
-        <div class="rounded-xl border border-slate-200 bg-white p-4">
-            <p class="text-xs text-slate-500">Kendaraan tersimpan</p>
-            <p class="text-2xl font-bold">{{ $vehicleCount }}</p>
-        </div>
-    </div>
+    <section class="mx-auto max-w-6xl px-4 pt-10">
+        <h2 class="text-2xl font-extrabold text-brand-dark">Ringkasan Akunmu</h2>
+        <p class="text-sm text-slate-500">Atur booking cuci kendaraan Anda dari sini.</p>
 
-    <div class="mt-6 flex flex-wrap gap-3">
-        <a href="{{ route('bookings.create') }}" class="rounded-md bg-sky-600 px-5 py-2 text-white hover:bg-sky-700">Booking baru</a>
-        <a href="{{ route('vehicles.index') }}" class="rounded-md border border-slate-300 bg-white px-5 py-2 hover:bg-slate-50">Kelola kendaraan</a>
-    </div>
+        <div class="mt-5 grid gap-4 sm:grid-cols-3">
+            <div class="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
+                <p class="text-xs text-slate-500">Booking aktif</p>
+                <p class="text-3xl font-extrabold text-brand-dark">{{ $upcoming->count() }}</p>
+            </div>
+            <div class="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
+                <p class="text-xs text-slate-500">Cuci selesai</p>
+                <p class="text-3xl font-extrabold text-brand-dark">{{ $completedCount }}</p>
+            </div>
+            <div class="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm">
+                <p class="text-xs text-slate-500">Kendaraan tersimpan</p>
+                <p class="text-3xl font-extrabold text-brand-dark">{{ $vehicleCount }}</p>
+            </div>
+        </div>
 
-    <section class="mt-8">
-        <h2 class="text-lg font-semibold">Booking berjalan</h2>
+        <h3 class="mt-8 text-lg font-bold text-brand-dark">Booking berjalan</h3>
         <div class="mt-3 space-y-3">
             @forelse ($upcoming as $booking)
-                <div class="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-slate-200 bg-white p-4">
+                <div class="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-slate-100 bg-white p-4 shadow-sm">
                     <div>
                         <p class="font-medium">{{ $booking->service->name }}
                             <span class="text-xs text-slate-400">· {{ $booking->code }}</span></p>
@@ -46,4 +44,6 @@
             @endforelse
         </div>
     </section>
+
+    @include('main.sections')
 @endsection
