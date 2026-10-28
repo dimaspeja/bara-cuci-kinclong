@@ -8,21 +8,25 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    /** Menu utama (publik). */
     public function landing()
     {
         return view('landing', [
-            'services' => Service::where('is_active', true)->orderBy('price')->get(),
+            'services' => $this->activeServices(),
         ]);
     }
 
-    public function services()
+    /** Daftar layanan; kolom pencarian di navbar mengirim ?q=... */
+    public function services(Request $request)
     {
+        $keyword = trim((string) $request->query('q', ''));
+
         return view('services', [
-            'services' => Service::where('is_active', true)->orderBy('price')->get(),
+            'services' => $this->activeServices($keyword),
         ]);
     }
 
-    /** Beranda pelanggan. */
+    /** Beranda pelanggan: menu utama + ringkasan akun. */
     public function home(Request $request)
     {
         $user = $request->user();
@@ -40,9 +44,21 @@ class HomeController extends Controller
             ->get();
 
         return view('home', [
+            'services' => $this->activeServices(),
             'upcoming' => $upcoming,
             'vehicleCount' => $user->vehicles()->count(),
             'completedCount' => $user->bookings()->where('status', BookingStatus::Completed->value)->count(),
         ]);
+    }
+
+    private function activeServices(string $keyword = '')
+    {
+        return Service::where('is_active', true)
+            ->when($keyword !== '', function ($query) use ($keyword) {
+                $like = '%'.addcslashes($keyword, '%_\\').'%';
+                $query->where(fn ($q) => $q->where('name', 'like', $like)->orWhere('description', 'like', $like));
+            })
+            ->orderBy('price')
+            ->get();
     }
 }
