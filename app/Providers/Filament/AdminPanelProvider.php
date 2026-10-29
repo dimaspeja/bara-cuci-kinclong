@@ -26,6 +26,9 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->brandName('Bara Cuci Kinclong')
+            ->brandLogo(asset('images/logo.png'))
+            ->brandLogoHeight('3.5rem')
+            ->favicon(asset('images/favicon.png'))
             // Tidak ada ->login(): pengguna yang belum masuk diarahkan ke route('login') (/login).
             ->colors([
                 'primary' => Color::Sky,

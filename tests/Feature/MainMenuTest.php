@@ -102,4 +102,14 @@ class MainMenuTest extends TestCase
 
         $this->get('/')->assertSee('Cuci Aktif')->assertDontSee('Layanan Nonaktif');
     }
+
+    public function test_brand_logo_is_used_on_main_pages(): void
+    {
+        $this->assertFileExists(public_path('images/logo.png'));
+        $this->assertFileExists(public_path('images/favicon.png'));
+
+        foreach (['/', '/login', '/register'] as $path) {
+            $this->get($path)->assertOk()->assertSee('images/logo.png', false);
+        }
+    }
 }

@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Bara Cuci Kinclong')</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -28,19 +29,12 @@
         $links[] = ['Kendaraan', route('vehicles.index'), request()->routeIs('vehicles.*')];
     }
     $links[] = ['Cara Pesan', route('landing').'#cara-pesan', false];
-    $links[] = ['Tentang Kami', '#tentang', false];
 @endphp
 
 <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
     <nav class="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3 text-sm">
-        <a href="{{ route('landing') }}" class="flex items-center gap-3">
-            <span class="flex h-11 w-11 items-center justify-center rounded-full bg-brand-dark text-white">
-                <x-ikon name="car" class="h-6 w-6" />
-            </span>
-            <span class="leading-tight">
-                <span class="block text-lg font-extrabold text-brand-dark">Bara Cuci Kinclong</span>
-                <span class="block text-xs text-slate-500">Bersih • Kinclong • Terpercaya</span>
-            </span>
+        <a href="{{ route('landing') }}" class="shrink-0">
+            <x-logo />
         </a>
 
         <div class="order-3 flex w-full flex-wrap gap-x-5 gap-y-1 lg:order-none lg:w-auto">
@@ -106,20 +100,14 @@
     <main class="mx-auto max-w-5xl px-4 py-8">@yield('content')</main>
 @endif
 
-<footer id="tentang" class="mt-10 bg-brand-dark text-slate-200">
+<footer class="mt-10 bg-brand-dark text-slate-200">
     <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-6 px-4 py-8 text-sm">
-        <div class="flex items-center gap-3">
-            <span class="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white">
-                <x-ikon name="car" class="h-6 w-6" />
-            </span>
-            <div class="leading-tight">
-                <p class="font-bold text-white">Bara Cuci Kinclong</p>
-                <p class="text-xs text-slate-300">Bersih • Kinclong • Terpercaya</p>
-            </div>
-        </div>
+        <a href="{{ route('landing') }}">
+            <x-logo variant="footer" />
+        </a>
 
         <p class="max-w-md text-xs leading-relaxed text-slate-300">
-            Tentang kami: tempat cuci kendaraan dengan sistem booking online.
+            Tempat cuci kendaraan dengan sistem booking online.
             Buka {{ sprintf('%02d.00', config('bara.open_hour', 8)) }}–{{ sprintf('%02d.00', config('bara.close_hour', 17)) }} WIB.
             Pembayaran dilakukan langsung di lokasi.
         </p>

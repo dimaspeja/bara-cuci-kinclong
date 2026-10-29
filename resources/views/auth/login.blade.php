@@ -9,14 +9,7 @@
 
             {{-- 1. Logo dan judul --}}
             <div class="flex flex-col items-center">
-                <div class="flex h-16 w-16 items-center justify-center rounded-full bg-[#0b2d4b]">
-                    <svg viewBox="0 0 24 24" class="h-9 w-9" aria-hidden="true">
-                        <path fill="#fff" d="M4 13l1.6-4.6A2 2 0 0 1 7.5 7h9a2 2 0 0 1 1.9 1.4L20 13v4a1 1 0 0 1-1 1h-1.5a1.5 1.5 0 0 1-3 0h-5a1.5 1.5 0 0 1-3 0H5a1 1 0 0 1-1-1v-4z"/>
-                        <path fill="#0b2d4b" d="M7.2 9h9.6l.9 2.6H6.3z"/>
-                        <circle cx="7.5" cy="14.4" r="1" fill="#0b2d4b"/>
-                        <circle cx="16.5" cy="14.4" r="1" fill="#0b2d4b"/>
-                    </svg>
-                </div>
+                <a href="{{ route('landing') }}"><x-logo variant="login" /></a>
                 <h1 class="mt-3 font-serif text-3xl font-bold text-[#0b2d4b]">Masuk ke Akun</h1>
             </div>
 

@@ -4,6 +4,9 @@
 
 @section('content')
     <div class="mx-auto max-w-sm rounded-xl border border-slate-200 bg-white p-6">
+        <a href="{{ route('landing') }}" class="mb-3 flex justify-center">
+            <x-logo variant="login" />
+        </a>
         <h1 class="text-xl font-bold">Buat Akun</h1>
 
         <form method="POST" action="{{ route('register.store') }}" class="mt-5 space-y-4">
