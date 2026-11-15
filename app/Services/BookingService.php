@@ -33,6 +33,32 @@ class BookingService
     }
 
     /**
+     * Ketersediaan tiap slot pada satu tanggal.
+     *
+     * @return array<string, array{remaining:int, past:bool, available:bool}>
+     */
+    public function availability(string $date): array
+    {
+        $capacity = (int) config('bara.slot_capacity', 3);
+
+        $taken = Booking::where('booking_date', $date)
+            ->where('status', '!=', BookingStatus::Cancelled->value)
+            ->get(['start_time'])
+            ->countBy(fn (Booking $b) => $b->timeLabel());
+
+        return collect($this->slots())->mapWithKeys(function (string $slot) use ($date, $taken, $capacity) {
+            $remaining = max(0, $capacity - (int) ($taken[$slot] ?? 0));
+            $past = Carbon::parse("$date $slot")->isPast();
+
+            return [$slot => [
+                'remaining' => $remaining,
+                'past' => $past,
+                'available' => $remaining > 0 && ! $past,
+            ]];
+        })->all();
+    }
+
+    /**
      * Buat booking baru (status pending).
      *
      * @param  array{service_id:int, vehicle_id:int, booking_date:string, start_time:string, notes?:?string}  $data

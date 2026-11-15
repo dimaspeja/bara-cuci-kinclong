@@ -13,7 +13,7 @@
             <div class="rounded-xl border border-slate-200 bg-white p-4">
                 <div class="flex flex-wrap items-start justify-between gap-2">
                     <div>
-                        <p class="font-semibold">{{ $booking->service->name }}
+                        <p class="font-semibold ">{{ $booking->service->name }}
                             <span class="text-xs font-normal text-slate-400">· {{ $booking->code }}</span></p>
                         <p class="text-sm text-slate-500">
                             {{ $booking->booking_date->translatedFormat('l, d M Y') }}, {{ $booking->timeLabel() }}
@@ -39,7 +39,10 @@
                 </div>
             </div>
         @empty
-            <p class="text-slate-500">Belum ada booking.</p>
+            <div class="rounded-xl border border-dashed border-slate-300 bg-white p-6 text-center text-slate-500">
+                Belum ada booking.
+                <a href="{{ route('bookings.create') }}" class="font-medium text-sky-600 underline">Buat booking pertama</a>.
+            </div>
         @endforelse
     </div>
 @endsection

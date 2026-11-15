@@ -1,0 +1,45 @@
+FASE 5 (REVISI 2) - Kendaraan, Booking Pelanggan, dan 7 Default Fields
+
+CARA PASANG
+1. Ekstrak zip ini ke folder project (yang ada artisan), pilih "Replace" untuk file yang sama.
+2. php artisan migrate        <-- WAJIB (2 migrasi baru: kolom kendaraan dan 7 default fields)
+3. php artisan test
+4. php artisan serve, lalu coba /vehicles dan /book
+
+7 DEFAULT FIELDS (permintaan dosen) - ada di semua tabel utama:
+  id (PK), status, is_deleted, created_by, created_at, updated_by, updated_at
+  - tabel users, services, vehicles, booking_status_logs: kolom "status"
+  - tabel bookings dan wash_jobs: sudah punya "status" alur kerja, jadi status default
+    bernama "record_status"
+  - created_by / updated_by terisi otomatis dari pengguna yang login
+  - tombol Hapus tidak menghapus baris, hanya mengubah is_deleted menjadi 1
+  - plat kendaraan yang sudah dihapus boleh didaftarkan lagi
+
+ISI
+- CRUD Kendaraan sekarang 7 field: plat, jenis, merek, model, warna, tahun, catatan
+  (warna dan tahun wajib; model dan catatan boleh kosong; tahun 1980 sampai tahun depan)
+- Ubah kendaraan: tombol "Ubah" di /vehicles
+- Form booking: tiap jam menampilkan "sisa N", "penuh", atau "lewat"
+- Tes: tests/Feature/VehicleBookingPageTest.php (14 tes) dan DefaultFieldsTest.php (5 tes)
+
+FILE BARU
+database/migrations/2026_11_15_000002_add_default_fields_to_all_tables.php
+app/Providers/DefaultFieldsServiceProvider.php
+tests/Feature/DefaultFieldsTest.php
+database/migrations/2026_11_15_000001_add_detail_columns_to_vehicles_table.php
+resources/views/vehicles/edit.blade.php
+tests/Feature/VehicleBookingPageTest.php
+
+FILE YANG DITIMPA
+bootstrap/providers.php  (menambah 1 baris DefaultFieldsServiceProvider)
+routes/web.php
+app/Http/Controllers/VehicleController.php
+app/Http/Controllers/BookingController.php
+app/Services/BookingService.php  (hanya menambah method availability)
+resources/views/vehicles/index.blade.php
+resources/views/bookings/create.blade.php
+resources/views/bookings/index.blade.php
+
+CATATAN
+tests\Feature\ExampleTest.php bawaan Laravel akan gagal ("no such table"). Hapus file itu
+atau tambahkan "use RefreshDatabase;" di dalamnya.

@@ -24,7 +24,16 @@ class BookingController extends Controller
 
     public function create(Request $request, BookingService $bookings)
     {
+        // Tanggal untuk menampilkan sisa kuota; salah ketik jatuh ke hari ini.
+        $date = $request->query('date');
+        $date = (is_string($date) && strtotime($date) !== false && $date >= now()->toDateString())
+            ? date('Y-m-d', strtotime($date))
+            : now()->toDateString();
+
         return view('bookings.create', [
+            'date' => $date,
+            'availability' => $bookings->availability($date),
+            'selectedVehicle' => $request->integer('vehicle'),
             'services' => Service::where('is_active', true)->orderBy('price')->get(),
             'vehicles' => $request->user()->vehicles()->orderBy('plate_number')->get(),
             'slots' => $bookings->slots(),
