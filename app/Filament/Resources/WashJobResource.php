@@ -5,13 +5,18 @@ namespace App\Filament\Resources;
 use App\Enums\WashJobStatus;
 use App\Filament\Resources\WashJobResource\Pages;
 use App\Models\WashJob;
+use App\Services\BookingService;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-/** Antrian dan riwayat pencucian (read-only). Aksinya dilakukan dari menu Booking. */
+/**
+ * Antrian dan riwayat pencucian.
+ * Staff bisa menekan "Mulai cuci" dan "Selesai" langsung dari antrian; perubahan
+ * tetap lewat BookingService, jadi booking, wash job, dan log status ikut berubah.
+ */
 class WashJobResource extends Resource
 {
     protected static ?string $model = WashJob::class;
@@ -66,6 +71,7 @@ class WashJobResource extends Resource
                 Tables\Columns\TextColumn::make('booking.user.name')->label('Pelanggan'),
                 Tables\Columns\TextColumn::make('booking.vehicle.plate_number')->label('Plat'),
                 Tables\Columns\TextColumn::make('booking.service.name')->label('Layanan'),
+                Tables\Columns\TextColumn::make('booking.notes')->label('Catatan')->placeholder('-')->toggleable(),
                 Tables\Columns\TextColumn::make('status')->label('Status')->badge(),
                 Tables\Columns\TextColumn::make('staff.name')->label('Staff')->placeholder('-'),
                 Tables\Columns\TextColumn::make('started_at')->label('Mulai')->dateTime('d M H:i')->placeholder('-'),
@@ -77,7 +83,30 @@ class WashJobResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('status')->label('Status')->options(WashJobStatus::class),
             ])
-            ->defaultSort('id', 'desc');
+            ->actions([
+                Tables\Actions\Action::make('start')
+                    ->label('Mulai cuci')
+                    ->icon('heroicon-o-play')
+                    ->color('primary')
+                    ->requiresConfirmation()
+                    ->visible(fn (WashJob $record) => $record->status === WashJobStatus::Waiting)
+                    ->action(fn (WashJob $record) => BookingResource::run(
+                        fn () => app(BookingService::class)->start($record->booking, auth()->user()),
+                        'Pencucian dimulai.'
+                    )),
+
+                Tables\Actions\Action::make('finish')
+                    ->label('Selesai')
+                    ->icon('heroicon-o-flag')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->visible(fn (WashJob $record) => $record->status === WashJobStatus::InProgress)
+                    ->action(fn (WashJob $record) => BookingResource::run(
+                        fn () => app(BookingService::class)->finish($record->booking, auth()->user()),
+                        'Pencucian selesai.'
+                    )),
+            ])
+            ->defaultSort('id');
     }
 
     public static function getPages(): array

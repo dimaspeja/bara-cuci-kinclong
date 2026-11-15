@@ -219,7 +219,7 @@ class BookingResource extends Resource
     }
 
     /** Jalankan aksi dan tampilkan notifikasi sukses / gagal. */
-    protected static function run(Closure $callback, string $successMessage): void
+    public static function run(Closure $callback, string $successMessage): void
     {
         try {
             $callback();
